@@ -49,3 +49,49 @@ def validate_directory(path):
     if not os.path.isdir(path):
         raise NotADirectoryError(f"Not a folder: {path}")
     return os.path.abspath(path)
+
+
+def scan_directory(path):
+    """Return a list of file records for the files directly inside path.
+
+    Sub-folders, symbolic links and hidden files are skipped (W3 S60).
+    Each record is a dictionary with: name, path, extension, size.
+    """
+    folder = validate_directory(path)
+    try:
+        entries = sorted(os.listdir(folder))
+    except PermissionError:
+        raise PermissionError(f"No permission to read folder: {path}")
+
+    records = []
+    for filename in entries:
+        full_path = os.path.join(folder, filename)
+        # A link could point outside the folder, so never follow it.
+        if os.path.islink(full_path) or not os.path.isfile(full_path):
+            continue
+        if should_skip(filename):
+            continue
+        if len(records) >= MAX_FILES:
+            raise ValueError(f"More than {MAX_FILES} files; split the folder into smaller batches.")
+        try:
+            size = os.path.getsize(full_path)
+        except OSError:
+            continue  # the file vanished or is locked; leave it alone
+        records.append({
+            "name": filename,
+            "path": full_path,
+            "extension": get_extension(filename),
+            "size": size,
+        })
+    return records
+
+
+def assign_categories(records, extension_map, other_folder):
+    """Add a "category" key to every record using the extension dictionary.
+
+    Unknown extensions go to other_folder, exactly like categories.get()
+    in the lecture organizer (W3 S17, S63).
+    """
+    for record in records:
+        record["category"] = extension_map.get(record["extension"], other_folder)
+    return records
