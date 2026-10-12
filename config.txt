@@ -1,0 +1,20 @@
+# Episode Organizer categories
+# Lines starting with # are comments.
+#
+# [categories]  Folder = extension, extension, ...
+# [settings]    required        = categories every episode must have
+#               other_folder    = folder for unknown extensions
+#               unsorted_folder = folder for files without an episode number
+
+[categories]
+Video = mp4, mov, mkv, m4v
+Audio = wav, mp3, m4a, flac, aac
+Thumbnail = png, jpg, webp
+Subtitle = srt, vtt
+Project = prproj, aep, drp, fcpxml
+Notes = txt, md, docx, pdf
+
+[settings]
+required = Video, Audio, Thumbnail, Subtitle
+other_folder = Other
+unsorted_folder = _Unsorted
