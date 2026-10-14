@@ -1,9 +1,9 @@
 # Contribution – Yusuf Berke Zengin
 
-- **Student ID:** [student id]
-- **GitHub:** [github username]
+- **Student ID:** [2409111002]
+- **GitHub:** [yusufberkez]
 - **Role:** Team coordinator, command-line interface, documentation and merges
-- **Branch / Pull Request:** `feature/cli-docs` → [PR link]
+- **Branch / Pull Request:** `feature/cli-docs`
 
 ## Files I wrote
 - `cli.py`
